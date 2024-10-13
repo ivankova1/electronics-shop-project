@@ -1,34 +1,58 @@
+# -*- coding: windows-1251 -*-
+import csv
 class Item:
     """
-    РљР»Р°СЃСЃ РґР»СЏ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ С‚РѕРІР°СЂР° РІ РјР°РіР°Р·РёРЅРµ.
+    Класс для представления товара в магазине.
     """
     pay_rate = 1.0
     all = []
-
     def __init__(self, name: str, price: float, quantity: int) -> None:
-        """
-        РЎРѕР·РґР°РЅРёРµ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° item.
 
-        :param name: РќР°Р·РІР°РЅРёРµ С‚РѕРІР°СЂР°.
-        :param price: Р¦РµРЅР° Р·Р° РµРґРёРЅРёС†Сѓ С‚РѕРІР°СЂР°.
-        :param quantity: РљРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕРІР°СЂР° РІ РјР°РіР°Р·РёРЅРµ.
-        """
-        self.name = name
+        self.name = name  # Используем сеттер для установки имени
         self.price = price
         self.quantity = quantity
-        Item.all.append(self) # Р”РѕР±Р°РІР»СЏРµРј С‚РµРєСѓС‰РёР№ СЌРєР·РµРјРїР»СЏСЂ РІ СЃРїРёСЃРѕРє РІСЃРµС… С‚РѕРІР°СЂРѕРІ
+        Item.all.append(self)  # Добавляем текущий экземпляр в список всех товаров
 
+    @property
+    def name(self) -> str:
+        """Геттер для имени товара."""
+        return self.__name
+
+    @name.setter
+    def name(self, value: str) -> None:
+        """Сеттер для имени товара с проверкой длины."""
+        if len(value) > 10:
+            value = value[:10]  # Обрезаем строку до 10 символов
+        self.__name = value
 
     def calculate_total_price(self) -> float:
         """
-        Р Р°СЃСЃС‡РёС‚С‹РІР°РµС‚ РѕР±С‰СѓСЋ СЃС‚РѕРёРјРѕСЃС‚СЊ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ С‚РѕРІР°СЂР° РІ РјР°РіР°Р·РёРЅРµ.
-
-        :return: РћР±С‰Р°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ С‚РѕРІР°СЂР°.
+        Рассчитывает общую стоимость конкретного товара в магазине.
         """
         return self.price * self.quantity * Item.pay_rate
 
     def apply_discount(self) -> None:
         """
-        РџСЂРёРјРµРЅСЏРµС‚ СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅСѓСЋ СЃРєРёРґРєСѓ РґР»СЏ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ С‚РѕРІР°СЂР°.
+        Применяет установленную скидку для конкретного товара.
         """
         self.price *= Item.pay_rate
+
+    @classmethod
+    def instantiate_from_csv(cls, file_path) -> None:
+        """Класс-метод, инициализирующий экземпляры класса Item данными из файла items.csv."""
+        with open(file_path, newline='', encoding='windows-1251') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                name = row['name']
+                price = cls.string_to_number(row['price'])
+                quantity = cls.string_to_number(row['quantity'])
+                cls(name, price, quantity)
+    @staticmethod
+    def string_to_number(s):
+        # Преобразуем строку в число с плавающей запятой
+        num = float(s)
+        # Если дробная часть равна 0, возвращаем целое число
+        if num.is_integer():
+            return int(num)
+        # В противном случае возвращаем целое число, отбрасывая дробную часть
+        return int(num)

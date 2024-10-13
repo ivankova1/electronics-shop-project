@@ -1,21 +1,23 @@
+# -*- coding: windows-1251 -*-
+
 from src.item import Item
 
 if __name__ == '__main__':
-    item = Item('РўРµР»РµС„РѕРЅ', 10000, 5)
+    item = Item('Телефон', 10000, 5)
 
-    # РґР»РёРЅР° РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ С‚РѕРІР°СЂР° РјРµРЅСЊС€Рµ 10 СЃРёРјРІРѕР»РѕРІ
-    item.name = 'РЎРјР°СЂС‚С„РѕРЅ'
-    assert item.name == 'РЎРјР°СЂС‚С„РѕРЅ'
+    # длина наименования товара меньше 10 символов
+    item.name = 'Смартфон'
+    assert item.name == 'Смартфон'
 
-    # РґР»РёРЅР° РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ С‚РѕРІР°СЂР° Р±РѕР»СЊС€Рµ 10 СЃРёРјРІРѕР»РѕРІ
-    item.name = 'РЎСѓРїРµСЂРЎРјР°СЂС‚С„РѕРЅ'
-    # Exception: Р”Р»РёРЅР° РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ С‚РѕРІР°СЂР° РїСЂРµРІС‹С€Р°РµС‚ 10 СЃРёРјРІРѕР»РѕРІ.
+    # длина наименования товара больше 10 символов
+    item.name = 'СуперСмартфон'
+    # Exception: Длина наименования товара превышает 10 символов.
 
-    Item.instantiate_from_csv('src/items.csv')  # СЃРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚РѕРІ РёР· РґР°РЅРЅС‹С… С„Р°Р№Р»Р°
-    assert len(Item.all) == 5  # РІ С„Р°Р№Р»Рµ 5 Р·Р°РїРёСЃРµР№ СЃ РґР°РЅРЅС‹РјРё РїРѕ С‚РѕРІР°СЂР°Рј
-
+    Item.all = []
+    Item.instantiate_from_csv('/Users/vanakoval/PycharmProjects/electronics-shop-project/src/items.csv')   #создание объектов из данных файла
+    assert len(Item.all) == 5  # в файле 5 записей с данными по товарам
     item1 = Item.all[0]
-    assert item1.name == 'РЎРјР°СЂС‚С„РѕРЅ'
+    assert item1.name == 'Смартфон'
 
     assert Item.string_to_number('5') == 5
     assert Item.string_to_number('5.0') == 5
