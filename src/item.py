@@ -56,3 +56,9 @@ class Item:
             return int(num)
         # ¬ противном случае возвращаем целое число, отбрасыва€ дробную часть
         return int(num)
+
+    def __repr__(self):
+        return f"Item({self.__name!r}, {self.price}, {self.quantity})"
+
+    def __str__(self):
+        return f"{self.__name}"

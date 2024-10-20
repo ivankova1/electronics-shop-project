@@ -57,5 +57,17 @@ def test_instantiate_from_csv(mocker):
     assert Item.all[1].price == 20000
     assert Item.all[1].quantity == 3
 
+def test_repr():
+    item = Item("Смартфон", 10000, 20)
+    expected_repr = "Item('Смартфон', 10000, 20)"
+    assert repr(item) == expected_repr
+
+
+def test_str():
+    item = Item("Смартфон", 10000, 20)
+    expected_repr = 'Смартфон'
+    assert str(item) == expected_repr
+
+
 if __name__ == "__main__":
     pytest.main()
