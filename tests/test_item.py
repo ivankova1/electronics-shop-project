@@ -2,7 +2,6 @@
 import pytest
 from src.item import Item
 
-
 @pytest.fixture(autouse=True)
 def clear_item_list():
     # Очищаем список всех экземпляров перед каждым тестом
