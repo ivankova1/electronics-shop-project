@@ -13,6 +13,8 @@ class Item:
         self.quantity = quantity
         Item.all.append(self)  # Добавляем текущий экземпляр в список всех товаров
 
+
+
     @property
     def name(self) -> str:
         """Геттер для имени товара."""
@@ -57,8 +59,14 @@ class Item:
         # В противном случае возвращаем целое число, отбрасывая дробную часть
         return int(num)
 
+    def __add__(self, other):
+        if isinstance(other, Item):  # Проверяем, является ли other экземпляром Item
+            return self.quantity + other.quantity
+        else:
+            return NotImplemented  # Возвращаем NotImplemented, если сложение невозможно
+
     def __repr__(self):
-        return f"Item({self.__name!r}, {self.price}, {self.quantity})"
+        return f'Item({self.__name!r}, {self.price}, {self.quantity})'
 
     def __str__(self):
         return f"{self.__name}"
