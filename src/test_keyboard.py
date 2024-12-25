@@ -1,3 +1,4 @@
+import pytest
 from src.keyboard import Keyboard
 
 def test_keyboard_initialization():
@@ -26,5 +27,5 @@ def test_change_language_back_to_english():
     keyboard.change_lang()  # Меняем обратно на английский
     assert keyboard.language == 'EN'
 
-# if __name__ == "__main__":
-#     pytest.main()
+if __name__ == "__main__":
+    pytest.main()

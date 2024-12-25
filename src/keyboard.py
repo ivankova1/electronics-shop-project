@@ -8,7 +8,7 @@ class Keyboard(Item, LanguageMixin):
         LanguageMixin.__init__(self)  # Инициализируем миксин
 
     def __repr__(self):
-        return f"Keyboard({self.name!r}, {self.price}, {self.quantity}, {self.language})"
+        return f"Keyboard({self.name!r}, {self.price}, {self.quantity}, {self.language!r})"
 
     def __str__(self):
         return f'{self.name}'
