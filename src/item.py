@@ -22,10 +22,9 @@ class Item:
 
     @name.setter
     def name(self, value: str) -> None:
-        """Сеттер для имени товара с проверкой длины."""
-        if len(value) > 10:
-            value = value[:10]  # Обрезаем строку до 10 символов
         self.__name = value
+    """Сеттер для имени товара."""
+
 
     def calculate_total_price(self) -> float:
         """

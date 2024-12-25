@@ -11,5 +11,5 @@ class Keyboard(Item, LanguageMixin):
         return f"Keyboard({self.name!r}, {self.price}, {self.quantity}, {self.language})"
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
