@@ -1,84 +1,82 @@
-# -*- coding: windows-1251 -*-
 import csv
 
 
 class InstantiateCSVError(Exception):
-    """Исключение, возникающее при ошибках инициализации из CSV файла."""
+    """РСЃРєР»СЋС‡РµРЅРёРµ, РІРѕР·РЅРёРєР°СЋС‰РµРµ РїСЂРё РѕС€РёР±РєР°С… РёРЅРёС†РёР°Р»РёР·Р°С†РёРё РёР· CSV С„Р°Р№Р»Р°."""
     pass
 class Item:
-    """
-    Класс для представления товара в магазине.
-    """
+    """ РљР»Р°СЃСЃ РґР»СЏ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ С‚РѕРІР°СЂР° РІ РјР°РіР°Р·РёРЅРµ. """
+
     pay_rate = 1.0
     all = []
     def __init__(self, name: str, price: float, quantity: int) -> None:
 
-        self.name = name  # Используем сеттер для установки имени
+        self.name = name  # РСЃРїРѕР»СЊР·СѓРµРј СЃРµС‚С‚РµСЂ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё РёРјРµРЅРё
         self.price = price
         self.quantity = quantity
-        Item.all.append(self)  # Добавляем текущий экземпляр в список всех товаров
+        Item.all.append(self)  # Р”РѕР±Р°РІР»СЏРµРј С‚РµРєСѓС‰РёР№ СЌРєР·РµРјРїР»СЏСЂ РІ СЃРїРёСЃРѕРє РІСЃРµС… С‚РѕРІР°СЂРѕРІ
 
 
 
     @property
     def name(self) -> str:
-        """Геттер для имени товара."""
+        """Р“РµС‚С‚РµСЂ РґР»СЏ РёРјРµРЅРё С‚РѕРІР°СЂР°."""
         return self.__name
 
     @name.setter
     def name(self, value: str) -> None:
         self.__name = value
-    """Сеттер для имени товара."""
+    """РЎРµС‚С‚РµСЂ РґР»СЏ РёРјРµРЅРё С‚РѕРІР°СЂР°."""
 
 
     def calculate_total_price(self) -> float:
         """
-        Рассчитывает общую стоимость конкретного товара в магазине.
+        Р Р°СЃСЃС‡РёС‚С‹РІР°РµС‚ РѕР±С‰СѓСЋ СЃС‚РѕРёРјРѕСЃС‚СЊ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ С‚РѕРІР°СЂР° РІ РјР°РіР°Р·РёРЅРµ.
         """
         return self.price * self.quantity * Item.pay_rate
 
     def apply_discount(self) -> None:
         """
-        Применяет установленную скидку для конкретного товара.
+        РџСЂРёРјРµРЅСЏРµС‚ СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅСѓСЋ СЃРєРёРґРєСѓ РґР»СЏ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ С‚РѕРІР°СЂР°.
         """
         self.price *= Item.pay_rate
 
 
     @classmethod
     def instantiate_from_csv(cls, file_path='items.csv') -> None:
-        """Класс-метод, инициализирующий экземпляры класса Item данными из файла items.csv."""
+        """РљР»Р°СЃСЃ-РјРµС‚РѕРґ, РёРЅРёС†РёР°Р»РёР·РёСЂСѓСЋС‰РёР№ СЌРєР·РµРјРїР»СЏСЂС‹ РєР»Р°СЃСЃР° Item РґР°РЅРЅС‹РјРё РёР· С„Р°Р№Р»Р° items.csv."""
         try:
-            with open(file_path, newline='', encoding='windows-1251') as csvfile:
+            with open(file_path, newline='', encoding='UTF-8') as csvfile:
                 reader = csv.DictReader(csvfile)
                 for row in reader:
-                    # Проверяем наличие необходимых колонок
+                    # РџСЂРѕРІРµСЂСЏРµРј РЅР°Р»РёС‡РёРµ РЅРµРѕР±С…РѕРґРёРјС‹С… РєРѕР»РѕРЅРѕРє
                     if 'name' not in row or 'price' not in row or 'quantity' not in row:
-                        raise InstantiateCSVError("Файл item.csv поврежден")
+                        raise InstantiateCSVError("Р¤Р°Р№Р» item.csv РїРѕРІСЂРµР¶РґРµРЅ")
 
                     name = row['name']
                     price = cls.string_to_number(row['price'])
                     quantity = cls.string_to_number(row['quantity'])
                     cls(name, price, quantity)
         except FileNotFoundError:
-            raise FileNotFoundError("Отсутствует файл item.csv")
+            raise FileNotFoundError("РћС‚СЃСѓС‚СЃС‚РІСѓРµС‚ С„Р°Р№Р» item.csv")
         except Exception as e:
-            raise InstantiateCSVError(f"Произошла ошибка: {e}")
+            raise InstantiateCSVError(f"РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР°: {e}")
 
     @staticmethod
     def string_to_number(s):
-        # Преобразуем строку в число с плавающей запятой
+        # РџСЂРµРѕР±СЂР°Р·СѓРµРј СЃС‚СЂРѕРєСѓ РІ С‡РёСЃР»Рѕ СЃ РїР»Р°РІР°СЋС‰РµР№ Р·Р°РїСЏС‚РѕР№
         num = float(s)
-        # Если дробная часть равна 0, возвращаем целое число
+        # Р•СЃР»Рё РґСЂРѕР±РЅР°СЏ С‡Р°СЃС‚СЊ СЂР°РІРЅР° 0, РІРѕР·РІСЂР°С‰Р°РµРј С†РµР»РѕРµ С‡РёСЃР»Рѕ
         if num.is_integer():
             return int(num)
-        # В противном случае возвращаем целое число, отбрасывая дробную часть
+        # Р’ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ РІРѕР·РІСЂР°С‰Р°РµРј С†РµР»РѕРµ С‡РёСЃР»Рѕ, РѕС‚Р±СЂР°СЃС‹РІР°СЏ РґСЂРѕР±РЅСѓСЋ С‡Р°СЃС‚СЊ
         return int(num)
 
     def __add__(self, other):
-        if isinstance(other, Item):  # Проверяем, является ли other экземпляром Item
+        if isinstance(other, Item):  # РџСЂРѕРІРµСЂСЏРµРј, СЏРІР»СЏРµС‚СЃСЏ Р»Рё other СЌРєР·РµРјРїР»СЏСЂРѕРј Item
             return self.quantity + other.quantity
         else:
-            return NotImplemented  # Возвращаем NotImplemented, если сложение невозможно
+            return NotImplemented  # Р’РѕР·РІСЂР°С‰Р°РµРј NotImplemented, РµСЃР»Рё СЃР»РѕР¶РµРЅРёРµ РЅРµРІРѕР·РјРѕР¶РЅРѕ
 
     def __repr__(self):
         return f'Item({self.__name!r}, {self.price}, {self.quantity})'
